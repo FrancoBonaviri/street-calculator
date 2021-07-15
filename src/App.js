@@ -178,8 +178,8 @@ export default function App() {
           <TableHead>
             <TableRow>
               <StyledTableCell align="left">Disco</StyledTableCell>
-              <StyledTableCell align="left"> <input type="number" id="calleA" value={ calle1Origen } placeHolder="Calle A" onChange={ (e) => setCalle1Origen( e.target.value ) }  /> </StyledTableCell>
-              <StyledTableCell align="left"> <input type="number" id="calleB" value={ calle2Origen } placeHolder="Calle B" onChange={ (e) => setCalle2Origen( e.target.value ) }  /> </StyledTableCell>
+              <StyledTableCell align="left"> <input type="number" onFocus={ () => onFocus('calleA') } id="calleA" value={ calle1Origen } placeHolder="Calle A" onChange={ (e) => setCalle1Origen( e.target.value ) }  /> </StyledTableCell>
+              <StyledTableCell align="left"> <input type="number" onFocus={ () => onFocus('calleB') } id="calleB" value={ calle2Origen } placeHolder="Calle B" onChange={ (e) => setCalle2Origen( e.target.value ) }  /> </StyledTableCell>
               <StyledTableCell align="left">Distancia</StyledTableCell>
             </TableRow>
           </TableHead>
