@@ -7,8 +7,6 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { Button, TableFooter } from '@material-ui/core';
-import { scryRenderedDOMComponentsWithClass } from 'react-dom/test-utils';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -82,8 +80,6 @@ export default function App() {
     }
 
     dateTransferObject[i] = changedData
-    console.log(changedData);
-
     setData( dateTransferObject );
 
   }
@@ -101,7 +97,6 @@ export default function App() {
       setSelectedElement('disco-0')
     } else if( selectedElement.includes('disco-')) {
       const index = selectedElement.replace('disco-', '');
-      console.log(index);
       document.getElementById(`calle1-${index}`).focus();
       setSelectedElement(`calle1-${index}`); 
     } else if ( selectedElement.includes('calle1-') ) {
@@ -143,16 +138,18 @@ export default function App() {
       }
     }
 
-    transferObject = transferObject.sort(function(a, b)  {
+    let completos = transferObject.filter( a => a.distancia !== ''  );
+    let  incompletos = transferObject.filter( a => a.distancia === '' );
+
+    
+    completos = completos.sort(function(a, b)  {  
       if (a.distancia < b.distancia) {return -1;}
       if (a.distancia > b.distancia) {return 1;}
     })
-
-    const completos = transferObject.filter( a => a.distancia );
-    const incompletos = transferObject.filter( a => !a.distancia );
+    
     
     transferObject = [ ...completos, ...incompletos ];
-
+    
 
     document.getElementById('calleA').focus();
     setSelectedElement('calleA')
