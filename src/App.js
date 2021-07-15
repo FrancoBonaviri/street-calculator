@@ -112,6 +112,10 @@ export default function App() {
       let index = selectedElement.replace('calle2-', '');
       index = Number(index);
       index = index + 1;
+
+      if( !!!document.getElementById(`disco-${ index }`) ) {
+        return;
+      }
       document.getElementById(`disco-${ index }`).focus();
       setSelectedElement(`disco-${ index }`)
     }
@@ -160,6 +164,13 @@ export default function App() {
     setCalle2Origen('');
   }
 
+
+  const onFocus = ( id ) => {
+
+  }
+
+
+
   return (
     <>
       <TableContainer component={Paper} onKeyPress={ onPress }>
@@ -175,9 +186,9 @@ export default function App() {
           <TableBody>
             {data.map(( row, i ) => (
               <StyledTableRow key={row.name}>
-                <StyledTableCell align="left"><input placeHolder="Disco" id={ 'disco-' + i.toString() } name='disco' onChange={ (e) => onChange(e, i) } value={ row.disco } /></StyledTableCell>
-                <StyledTableCell align="left"><input type="number" id={ 'calle1-' + i.toString() } placeHolder="Calle 1" name='calle1' onChange={ (e) => onChange(e, i) } value={ row.calle1 } /></StyledTableCell>
-                <StyledTableCell align="left" ><input type="number" id={ 'calle2-' + i.toString() } placeHolder="Calle 2" name='calle2' onChange={ (e) => onChange(e, i) } value={ row.calle2 } /></StyledTableCell>
+                <StyledTableCell align="left"><input onFocus={() => onFocus( 'disco-' + i.toString()) } placeHolder="Disco" id={ 'disco-' + i.toString() } name='disco' onChange={ (e) => onChange(e, i) } value={ row.disco } /></StyledTableCell>
+                <StyledTableCell align="left"><input onFocus={() => onFocus( 'calle1-' + i.toString()) }  type="number" id={ 'calle1-' + i.toString() } placeHolder="Calle 1" name='calle1' onChange={ (e) => onChange(e, i) } value={ row.calle1 } /></StyledTableCell>
+                <StyledTableCell align="left" ><input onFocus={() => onFocus( 'calle2-' + i.toString()) }  type="number" id={ 'calle2-' + i.toString() } placeHolder="Calle 2" name='calle2' onChange={ (e) => onChange(e, i) } value={ row.calle2 } /></StyledTableCell>
                 <StyledTableCell align="left" style={{ color: 'red', fontSize: '2rem'}}> { row.distancia }</StyledTableCell>
               </StyledTableRow>
             ))}
