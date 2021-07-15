@@ -166,7 +166,7 @@ export default function App() {
 
 
   const onFocus = ( id ) => {
-
+    setSelectedElement( id );
   }
 
 
