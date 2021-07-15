@@ -154,11 +154,15 @@ export default function App() {
     transferObject = [ ...completos, ...incompletos ];
 
 
+    document.getElementById('calleA').focus();
+    setSelectedElement('calleA')
     setData( transferObject );
   }
   
 
   const clear = () => {
+    document.getElementById('calleA').focus();
+    setSelectedElement('calleA')
     setData( initialStateData );
     setCalle1Origen('');
     setCalle2Origen('');
