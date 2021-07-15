@@ -41,6 +41,7 @@ export default function App() {
   const [data, setData] = useState(initialStateData);
   const [calle1Origen, setCalle1Origen] = useState('')
   const [calle2Origen, setCalle2Origen] = useState('')
+  const [selectedElement, setSelectedElement] = useState('');
   
   
   const onPress = useCallback(document.onkeypress = (e) => {
@@ -64,6 +65,14 @@ export default function App() {
     setData( dateTransferObject );
   })
 
+  const onKeyPress = useCallback(document.onkeydown = (e) => {
+    if( e.keyCode == 34 ) {
+      nextElementFocus();
+    } else if( e.keyCode == 35 ) {
+      clear();
+    }
+  })
+
   const onChange = ( { target }, i ) => {
     let changedData = {...data[i]};
     let dateTransferObject = [...data]
@@ -77,6 +86,35 @@ export default function App() {
 
     setData( dateTransferObject );
 
+  }
+
+
+  const nextElementFocus = () => {
+    if( !selectedElement ){
+      document.getElementById('calleA').focus();
+      setSelectedElement('calleA')
+    } else if ( selectedElement == 'calleA' ) {
+      document.getElementById('calleB').focus();
+      setSelectedElement('calleB')
+    } else if( selectedElement == 'calleB') {
+      document.getElementById('disco-0').focus();
+      setSelectedElement('disco-0')
+    } else if( selectedElement.includes('disco-')) {
+      const index = selectedElement.replace('disco-', '');
+      console.log(index);
+      document.getElementById(`calle1-${index}`).focus();
+      setSelectedElement(`calle1-${index}`); 
+    } else if ( selectedElement.includes('calle1-') ) {
+      const index = selectedElement.replace('calle1-', '');
+      document.getElementById(`calle2-${index}`).focus();
+      setSelectedElement(`calle2-${index}`); 
+    } else if( selectedElement.includes('calle2-') ) {
+      let index = selectedElement.replace('calle2-', '');
+      index = Number(index);
+      index = index + 1;
+      document.getElementById(`disco-${ index }`).focus();
+      setSelectedElement(`disco-${ index }`)
+    }
   }
   
 
@@ -129,17 +167,17 @@ export default function App() {
           <TableHead>
             <TableRow>
               <StyledTableCell align="left">Disco</StyledTableCell>
-              <StyledTableCell align="left"> <input type="number" autofocus value={ calle1Origen } placeHolder="Calle A" onChange={ (e) => setCalle1Origen( e.target.value ) }  /> </StyledTableCell>
-              <StyledTableCell align="left"> <input type="number" value={ calle2Origen } placeHolder="Calle B" onChange={ (e) => setCalle2Origen( e.target.value ) }  /> </StyledTableCell>
+              <StyledTableCell align="left"> <input type="number" id="calleA" value={ calle1Origen } placeHolder="Calle A" onChange={ (e) => setCalle1Origen( e.target.value ) }  /> </StyledTableCell>
+              <StyledTableCell align="left"> <input type="number" id="calleB" value={ calle2Origen } placeHolder="Calle B" onChange={ (e) => setCalle2Origen( e.target.value ) }  /> </StyledTableCell>
               <StyledTableCell align="left">Distancia</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {data.map(( row, i ) => (
               <StyledTableRow key={row.name}>
-                <StyledTableCell align="left"><input placeHolder="Disco" name='disco' onChange={ (e) => onChange(e, i) } value={ row.disco } /></StyledTableCell>
-                <StyledTableCell align="left"><input type="number" placeHolder="Calle 1" name='calle1' onChange={ (e) => onChange(e, i) } value={ row.calle1 } /></StyledTableCell>
-                <StyledTableCell align="left" ><input type="number" placeHolder="Calle 2" name='calle2' onChange={ (e) => onChange(e, i) } value={ row.calle2 } /></StyledTableCell>
+                <StyledTableCell align="left"><input placeHolder="Disco" id={ 'disco-' + i.toString() } name='disco' onChange={ (e) => onChange(e, i) } value={ row.disco } /></StyledTableCell>
+                <StyledTableCell align="left"><input type="number" id={ 'calle1-' + i.toString() } placeHolder="Calle 1" name='calle1' onChange={ (e) => onChange(e, i) } value={ row.calle1 } /></StyledTableCell>
+                <StyledTableCell align="left" ><input type="number" id={ 'calle2-' + i.toString() } placeHolder="Calle 2" name='calle2' onChange={ (e) => onChange(e, i) } value={ row.calle2 } /></StyledTableCell>
                 <StyledTableCell align="left" style={{ color: 'red', fontSize: '2rem'}}> { row.distancia }</StyledTableCell>
               </StyledTableRow>
             ))}
