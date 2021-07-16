@@ -64,10 +64,17 @@ export default function App() {
   })
 
   const onKeyPress = useCallback(document.onkeydown = (e) => {
-    if( e.keyCode == 34 ) {
+    if( e.keyCode == 34 || e.keyCode == 39 || e.keyCode ==  107 ) {
       nextElementFocus();
     } else if( e.keyCode == 35 ) {
       clear();
+    } else if( e.keyCode == 37 || e.keyCode == 109 ) {
+      prevElementFocus();
+    } else if ( e.keyCode == 38) {
+      upElementFocus();
+    }
+    else if ( e.keyCode == 40 ) {
+      downElementFocus();
     }
   })
 
@@ -87,35 +94,188 @@ export default function App() {
 
   const nextElementFocus = () => {
     if( !selectedElement ){
-      document.getElementById('calleA').focus();
+      let element = document.getElementById('calleA');
+      if( !element ) { return; }
+      element.focus();
       setSelectedElement('calleA')
     } else if ( selectedElement == 'calleA' ) {
-      document.getElementById('calleB').focus();
+      let element = document.getElementById('calleB');
+      if( !element ) { return; }
+      element.focus();
       setSelectedElement('calleB')
     } else if( selectedElement == 'calleB') {
-      document.getElementById('disco-0').focus();
+      let element = document.getElementById('disco-0');
+      if( !element ) { return; }
+      element.focus();
       setSelectedElement('disco-0')
     } else if( selectedElement.includes('disco-')) {
       const index = selectedElement.replace('disco-', '');
-      document.getElementById(`calle1-${index}`).focus();
+      let element = document.getElementById(`calle1-${index}`);
+      if( !element ) { return; }
+      element.focus();
       setSelectedElement(`calle1-${index}`); 
     } else if ( selectedElement.includes('calle1-') ) {
       const index = selectedElement.replace('calle1-', '');
-      document.getElementById(`calle2-${index}`).focus();
+      let element = document.getElementById(`calle2-${index}`);
+      if( !element ) { return; }
+      element.focus();
       setSelectedElement(`calle2-${index}`); 
     } else if( selectedElement.includes('calle2-') ) {
       let index = selectedElement.replace('calle2-', '');
       index = Number(index);
       index = index + 1;
-
       if( !!!document.getElementById(`disco-${ index }`) ) {
         return;
       }
-      document.getElementById(`disco-${ index }`).focus();
+      let element = document.getElementById(`disco-${ index }`);
+      if( !element ) { return; }
+      element.focus();
       setSelectedElement(`disco-${ index }`)
     }
   }
+
+  const prevElementFocus = () =>  {
+    if( !selectedElement || selectedElement == 'calleA' ){
+      return;
+    } else if( selectedElement == 'calleB') {
+      let element = document.getElementById('calleA');
+      if( ! element ) { return; }
+      element.focus();
+      setSelectedElement('calleA')
+    } else if( selectedElement.includes('disco-')) {
+      const index = selectedElement.replace('disco-', '');
+
+      if( index == 0 ) {
+        let element = document.getElementById('calleB');
+        if( ! element ) { return; }
+        element.focus();
+        setSelectedElement('calleB')
+        return;
+      } else {  
+        let element =  document.getElementById(`calle2-${Number(index) - 1}`);
+        if( ! element ) { return; }
+        element.focus();
+        setSelectedElement(`calle2-${Number(index) - 1}`); 
+      }
+
+    } else if ( selectedElement.includes('calle1-') ) {
+      const index = selectedElement.replace('calle1-', '');
+      let element = document.getElementById(`disco-${index}`);
+      if( ! element ) { return; }
+      element.focus();
+      setSelectedElement(`disco-${index}`); 
+    } else if( selectedElement.includes('calle2-') ) {
+      let index = selectedElement.replace('calle2-', '');
+      let element = document.getElementById(`calle1-${ index }`);
+      if( ! element ) { return; }
+      element.focus();
+      setSelectedElement(`calle1-${ index }`)
+    }
+  }
   
+
+  const upElementFocus = () => {
+    if( !selectedElement || selectedElement == 'calleA' || selectedElement == 'calleB' || selectedElement == 'disco-0' ) {
+      return;
+    }
+    if( selectedElement.includes('disco-')) {
+      const index = selectedElement.replace('disco-', '');
+      let element = document.getElementById(`disco-${Number(index) - 1}`);
+      if( !element ) { return ;}
+      element.focus();
+      setSelectedElement(`disco-${Number(index) - 1}`); 
+      return;
+    }
+    if( selectedElement.includes('calle1-')) {
+      const index = selectedElement.replace('calle1-', '');
+
+      if( index == 0 ) {
+        let element = document.getElementById('calleA');
+        if( !element ) { return ;}
+        element.focus();
+        setSelectedElement('calleA')
+        return;
+      } 
+
+      let element = document.getElementById(`calle1-${Number(index) - 1}`);
+      if( !element ) { return ;}
+      element.focus();
+      setSelectedElement(`calle1-${Number(index) - 1}`); 
+      return;
+    }
+    if( selectedElement.includes('calle2-')) {
+      const index = selectedElement.replace('calle2-', '');
+
+      if( index == 0 ) {
+        let element = document.getElementById('calleB');
+        if( !element ) { return ;}
+        element.focus();
+        setSelectedElement('calleB')
+        return;
+      } 
+      
+      let element = document.getElementById(`calle2-${Number(index) - 1}`);
+      if( !element ) { return ;}
+      element.focus();
+      setSelectedElement(`calle2-${Number(index) - 1}`); 
+      return;
+    }
+  } 
+
+  const downElementFocus = () => {
+
+    if( !selectedElement ) {
+      return;
+    }
+    let index = selectedElement.split('-')[1];
+    if( index == data.length -1 ) {
+      return;
+    }
+
+    if( selectedElement.includes('disco-')) {
+      const index = selectedElement.replace('disco-', '');
+      let element = document.getElementById(`disco-${Number(index) + 1}`);
+      if( !element) {return;}
+      element.focus();
+      setSelectedElement(`disco-${Number(index) + 1}`); 
+      return;
+    }
+    if( selectedElement.includes('calle1-')) {
+      const index = selectedElement.replace('calle1-', '');
+      let element = document.getElementById(`calle1-${Number(index) + 1}`);
+      if( !element) {return;}
+      element.focus();
+      setSelectedElement(`calle1-${Number(index) + 1}`); 
+      return;
+    }
+    if( selectedElement.includes('calle2-')) {
+      const index = selectedElement.replace('calle2-', '');
+      let element = document.getElementById(`calle2-${Number(index) + 1}`);
+      if( !element) {return;}
+      element.focus();
+      setSelectedElement(`calle2-${Number(index) + 1}`); 
+      return;
+    }
+
+
+    if( selectedElement == 'calleA' ) {
+      let element = document.getElementById(`calle1-0`);
+      if( !element) {return;}
+      element.focus();
+      setSelectedElement(`calle1-0`); 
+      return;
+    }
+
+    
+    if( selectedElement == 'calleB' ) {
+      let element = document.getElementById(`calle2-0`);
+      if( !element) {return;}
+      element.focus();
+      setSelectedElement(`calle2-0`); 
+      return;
+    }
+
+  }
 
 
   const sort = () => {
@@ -179,17 +339,17 @@ export default function App() {
           <TableHead>
             <TableRow>
               <StyledTableCell align="left">Disco</StyledTableCell>
-              <StyledTableCell align="left"> <input type="number" onFocus={ () => onFocus('calleA') } id="calleA" value={ calle1Origen } placeHolder="Calle A" onChange={ (e) => setCalle1Origen( e.target.value ) }  /> </StyledTableCell>
-              <StyledTableCell align="left"> <input type="number" onFocus={ () => onFocus('calleB') } id="calleB" value={ calle2Origen } placeHolder="Calle B" onChange={ (e) => setCalle2Origen( e.target.value ) }  /> </StyledTableCell>
+              <StyledTableCell align="left"> <input autoComplete='off' type="text" onFocus={ () => onFocus('calleA') } id="calleA" value={ calle1Origen } placeHolder="Calle A" onChange={ (e) => setCalle1Origen( e.target.value ) }  /> </StyledTableCell>
+              <StyledTableCell align="left"> <input autoComplete='off' type="text" onFocus={ () => onFocus('calleB') } id="calleB" value={ calle2Origen } placeHolder="Calle B" onChange={ (e) => setCalle2Origen( e.target.value ) }  /> </StyledTableCell>
               <StyledTableCell align="left">Distancia</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {data.map(( row, i ) => (
               <StyledTableRow key={row.name}>
-                <StyledTableCell align="left"><input onFocus={() => onFocus( 'disco-' + i.toString()) } placeHolder="Disco" id={ 'disco-' + i.toString() } name='disco' onChange={ (e) => onChange(e, i) } value={ row.disco } /></StyledTableCell>
-                <StyledTableCell align="left"><input onFocus={() => onFocus( 'calle1-' + i.toString()) }  type="number" id={ 'calle1-' + i.toString() } placeHolder="Calle 1" name='calle1' onChange={ (e) => onChange(e, i) } value={ row.calle1 } /></StyledTableCell>
-                <StyledTableCell align="left" ><input onFocus={() => onFocus( 'calle2-' + i.toString()) }  type="number" id={ 'calle2-' + i.toString() } placeHolder="Calle 2" name='calle2' onChange={ (e) => onChange(e, i) } value={ row.calle2 } /></StyledTableCell>
+                <StyledTableCell align="left"><input autoComplete='off' onFocus={() => onFocus( 'disco-' + i.toString()) } placeHolder="Disco" id={ 'disco-' + i.toString() } name='disco' onChange={ (e) => onChange(e, i) } value={ row.disco } /></StyledTableCell>
+                <StyledTableCell align="left"><input autoComplete='off' onFocus={() => onFocus( 'calle1-' + i.toString()) }  type="text" id={ 'calle1-' + i.toString() } placeHolder="Calle 1" name='calle1' onChange={ (e) => onChange(e, i) } value={ row.calle1 } /></StyledTableCell>
+                <StyledTableCell align="left" ><input autoComplete='off' onFocus={() => onFocus( 'calle2-' + i.toString()) }  type="text" id={ 'calle2-' + i.toString() } placeHolder="Calle 2" name='calle2' onChange={ (e) => onChange(e, i) } value={ row.calle2 } /></StyledTableCell>
                 <StyledTableCell align="left" style={{ color: 'red', fontSize: '2rem'}}> { row.distancia }</StyledTableCell>
               </StyledTableRow>
             ))}
