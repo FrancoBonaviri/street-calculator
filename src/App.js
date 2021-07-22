@@ -33,6 +33,9 @@ const useStyles = makeStyles({
   },
 });
 
+
+const regex = /[^0-9 -]/g
+
 export default function App() {
   const classes = useStyles();
 
@@ -68,7 +71,7 @@ export default function App() {
       nextElementFocus();
     } else if( e.keyCode == 35 ) {
       clear();
-    } else if( e.keyCode == 37 || e.keyCode == 109 ) {
+    } else if( e.keyCode == 37  ) {
       prevElementFocus();
     } else if ( e.keyCode == 38) {
       upElementFocus();
@@ -83,7 +86,7 @@ export default function App() {
     let dateTransferObject = [...data]
     changedData = {
       ...changedData,
-      [ target.name ]: target.value 
+      [ target.name ]: target.value.replace(regex, '') 
     }
 
     dateTransferObject[i] = changedData
@@ -339,8 +342,8 @@ export default function App() {
           <TableHead>
             <TableRow>
               <StyledTableCell align="left">Disco</StyledTableCell>
-              <StyledTableCell align="left"> <input autoComplete='off' type="text" onFocus={ () => onFocus('calleA') } id="calleA" value={ calle1Origen } placeHolder="Calle A" onChange={ (e) => setCalle1Origen( e.target.value ) }  /> </StyledTableCell>
-              <StyledTableCell align="left"> <input autoComplete='off' type="text" onFocus={ () => onFocus('calleB') } id="calleB" value={ calle2Origen } placeHolder="Calle B" onChange={ (e) => setCalle2Origen( e.target.value ) }  /> </StyledTableCell>
+              <StyledTableCell align="left"> <input autoComplete='off' type="text" onFocus={ () => onFocus('calleA') } id="calleA" value={ calle1Origen } placeHolder="Calle A" onChange={ (e) => setCalle1Origen( e.target.value.replace(regex, '') ) }  /> </StyledTableCell>
+              <StyledTableCell align="left"> <input autoComplete='off' type="text" onFocus={ () => onFocus('calleB') } id="calleB" value={ calle2Origen } placeHolder="Calle B" onChange={ (e) => setCalle2Origen( e.target.value.replace(regex, '') ) }  /> </StyledTableCell>
               <StyledTableCell align="left">Distancia</StyledTableCell>
             </TableRow>
           </TableHead>
